@@ -30,16 +30,28 @@ CREATE TABLE item (
 --rollback DROP TABLE IF EXISTS item;
 
 --changeset dmitry_lysenko:004
-CREATE TABLE bucket (
-                        item_id INT NOT NULL,
-                        user_id INT NOT NULL,
-                        adding_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                        PRIMARY KEY (item_id, user_id, adding_time),
-                        CONSTRAINT fk_bucket_item FOREIGN KEY (item_id) REFERENCES item(item_id)
-                            ON DELETE CASCADE
-                            ON UPDATE CASCADE,
-                        CONSTRAINT fk_bucket_user FOREIGN KEY (user_id) REFERENCES "user"(user_id)
-                            ON DELETE CASCADE
-                            ON UPDATE CASCADE
+CREATE TABLE "order" (
+                         order_id SERIAL PRIMARY KEY,
+                         user_id INT NOT NULL,
+                         adding_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         total_cost NUMERIC(10, 2) NOT NULL CHECK (total_cost >= 0),
+                         item_details JSONB NOT NULL,
+                         CONSTRAINT fk_order_user FOREIGN KEY (user_id) REFERENCES "user"(user_id)
+                             ON DELETE CASCADE
+                             ON UPDATE CASCADE
 );
---rollback DROP TABLE IF EXISTS bucket;
+--rollback DROP TABLE IF EXISTS "order";
+
+--changeset dmitry_lysenko:005
+CREATE TABLE order_item (
+                            order_id INT NOT NULL,
+                            item_id INT NOT NULL,
+                            PRIMARY KEY (order_id, item_id),
+                            CONSTRAINT fk_orderitem_order FOREIGN KEY (order_id) REFERENCES "order"(order_id)
+                                ON DELETE CASCADE
+                                ON UPDATE CASCADE,
+                            CONSTRAINT fk_orderitem_item FOREIGN KEY (item_id) REFERENCES item(item_id)
+                                ON DELETE CASCADE
+                                ON UPDATE CASCADE
+);
+--rollback DROP TABLE IF EXISTS order_item;

@@ -28,6 +28,7 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id")
     private Long itemId;
 
     @Column(name = "item_name", nullable = false, length = 200)
@@ -43,5 +44,5 @@ public class Item {
     private String itemPhoto;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Bucket> buckets = new ArrayList<>();
+    private List<OrderItem> buckets = new ArrayList<>();
 }
