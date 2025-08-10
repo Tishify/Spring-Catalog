@@ -55,3 +55,10 @@ CREATE TABLE order_item (
                                 ON UPDATE CASCADE
 );
 --rollback DROP TABLE IF EXISTS order_item;
+
+--changeset dmitry_lysenko:006
+ALTER TABLE "user"
+    ADD COLUMN password_hash VARCHAR(255),
+    ADD COLUMN enabled BOOLEAN DEFAULT TRUE NOT NULL;
+--rollback ALTER TABLE "user" DROP COLUMN IF EXISTS password_hash, DROP COLUMN IF EXISTS enabled;
+
