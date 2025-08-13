@@ -43,6 +43,5 @@ public class Item {
     @Column(name = "item_photo", columnDefinition = "TEXT")
     private String itemPhoto;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderItem> buckets = new ArrayList<>();
+
 }

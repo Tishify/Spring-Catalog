@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "order_item")
+@Table(name = "order_items")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

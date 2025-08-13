@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: SpringCatalogApp
+
+#  liquibase:
+#    change-log: classpath:db/changelog-master.xml
+#    enabled: true
+#    contexts: dev
+
+  datasource:
+    url: jdbc:postgresql://localhost:${POSTGRES_PORT:15432}/${POSTGRES_DB:catalog_db}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none   # или update/create/create-drop — по нужде
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+docker:
+  compose:
+    path: /opt/myproject/docker-compose.yml
+    up: up -d
+    down: down
+
+logging:
+  level:
+    liquibase: DEBUG
+    root: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
+    org.springframework.http.client: DEBUG
+    org.apache.http: DEBUG
+    org.apache.http.wire: DEBUG

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="ext-releases-local-java" />
+      <option name="name" value="ext-releases-local-java" />
+      <option name="url" value="https://spscommerceinc.jfrog.io/artifactory/ext-releases-local-java" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="java-releases" />
+      <option name="name" value="java-releases" />
+      <option name="url" value="https://spscommerceinc.jfrog.io/spscommerceinc/java-releases" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="bintray-jfrog" />
+      <option name="name" value="bintray-jfrog" />
+      <option name="url" value="https://dl.bintray.com/jfrog/jfrog-jars" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jcenter-bintray" />
+      <option name="name" value="jcenter-bintray" />
+      <option name="url" value="https://jcenter.bintray.com" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="sonatype" />
+      <option name="name" value="sonatype" />
+      <option name="url" value="https://oss.sonatype.org/content/repositories/releases" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="snapshots" />
+      <option name="name" value="snapshots" />
+      <option name="url" value="https://spscommerceinc.jfrog.io/spscommerceinc/snapshots" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="java-snapshots" />
+      <option name="name" value="java-snapshots" />
+      <option name="url" value="https://spscommerceinc.jfrog.io/spscommerceinc/java-snapshots" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="prod-releases" />
+      <option name="name" value="prod-releases" />
+      <option name="url" value="https://spscommerceinc.jfrog.io/spscommerceinc/prod-releases" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="central" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+  </component>
+</project>
