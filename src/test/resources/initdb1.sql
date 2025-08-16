@@ -24,8 +24,7 @@ CREATE TABLE "items" (
                       item_id SERIAL PRIMARY KEY,
                       item_name VARCHAR(200) NOT NULL,
                       item_price NUMERIC(10, 2) NOT NULL CHECK (item_price >= 0),
-                      item_description TEXT,
-                      item_photo TEXT
+                      item_description TEXT
 );
 --rollback DROP TABLE IF EXISTS items;
 
@@ -35,7 +34,6 @@ CREATE TABLE "orders" (
                          user_id INT NOT NULL,
                          adding_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          total_cost NUMERIC(10, 2) NOT NULL CHECK (total_cost >= 0),
-                         item_details JSONB NOT NULL,
                          CONSTRAINT fk_order_user FOREIGN KEY (user_id) REFERENCES "users"(user_id)
                              ON DELETE CASCADE
                              ON UPDATE CASCADE

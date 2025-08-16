@@ -1,20 +1,16 @@
 package org.tishfy.springcatalog.service;
 
 
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tishfy.springcatalog.model.User;
 import org.tishfy.springcatalog.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
-import java.util.List;
-
 @Service
-//@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
@@ -28,13 +24,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findById(Long id) {
-        return userRepository.findById(id); // Spring Data уже отдаёт Optional<User>
+        return userRepository.findById(id);
     }
 
     @Override
     @Transactional
     public User create(User user) {
-        user.setUserId(null); // на случай, если пришёл id
+        user.setUserId(null);
         return userRepository.save(user);
     }
 
@@ -44,16 +40,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).map(u -> {
             u.setEmail(patch.getEmail());
             u.setName(patch.getName());
-            u.setRole(patch.getRole()); // если @ManyToOne — подставь корректно
+            u.setRole(patch.getRole());
             return userRepository.save(u);
         });
     }
 
-
     @Override
     @Transactional
-    public void delete(Long id)  {
-        findById(id).map(user ->{
+    public void delete(Long id) {
+        findById(id).map(user -> {
             userRepository.delete(user);
             return null;
         });

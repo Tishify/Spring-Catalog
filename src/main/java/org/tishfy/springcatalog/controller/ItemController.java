@@ -6,40 +6,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.tishfy.springcatalog.model.User;
-import org.tishfy.springcatalog.service.UserService;
+import org.tishfy.springcatalog.model.Item;
+import org.tishfy.springcatalog.service.ItemService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/items")
+public class ItemController {
 
     @Autowired
-    private UserService service;
+    private ItemService service;
 
     @GetMapping
-    public List<User> getUsers() {
+    public List<Item> getItems() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> get(@PathVariable Long id) {
+    public Optional<Item> get(@PathVariable Long id) {
         return service.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody User user) {
+    public Item create(@RequestBody Item item) {
 
-        return service.create(user);
+        return service.create(item);
     }
 
     @PutMapping("/{id}")
-    public Optional<User> update(@PathVariable Long id, @RequestBody User user) throws ChangeSetPersister.NotFoundException {
-        return service.update(id, user);
+    public Optional<Item> update(@PathVariable Long id, @RequestBody Item item) throws ChangeSetPersister.NotFoundException {
+        return service.update(id, item);
     }
 
     @DeleteMapping("/{id}")

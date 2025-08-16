@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  mvc:
+    log-request-details: true
   application:
     name: SpringCatalogApp
 #
@@ -36,6 +38,8 @@ logging:
     org.springframework.http.client: DEBUG
     org.apache.http: DEBUG
     org.apache.http.wire: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+    org.springframework.web: DEBUG
 
 api:
   base-url: "http://localhost:8080"

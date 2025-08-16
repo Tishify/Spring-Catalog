@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>package.org.tishfy.springcatalog</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>spring-catalog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Spring Catalog </name>
     <description>Spring Catalog</description>

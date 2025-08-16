@@ -5,6 +5,7 @@ spring:
   application:
     name: SpringCatalogApp
 
+
 #  liquibase:
 #    change-log: classpath:db/changelog-master.xml
 #    enabled: true
