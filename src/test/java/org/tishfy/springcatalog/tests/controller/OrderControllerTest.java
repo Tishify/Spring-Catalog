@@ -158,7 +158,7 @@ class OrderControllerTest extends BaseAutoTestConfiguration {
                 .filter(e -> "totalCost".equals(e.getField()))
                 .map(ErrorResponse.FieldError::getMessage)
                 .findFirst().orElse("Error Not Found"));
-        assertEquals("Name cannot be null", errors.getErrors().stream()
+        assertEquals("User cannot be null", errors.getErrors().stream()
                 .filter(e -> "user".equals(e.getField()))
                 .map(ErrorResponse.FieldError::getMessage)
                 .findFirst().orElse("Error Not Found"));
@@ -180,6 +180,7 @@ class OrderControllerTest extends BaseAutoTestConfiguration {
         //prepare order for update. One item for delete, add two new items
         Order OrderForUpdate = Order.builder()
                 .totalCost(BigDecimal.valueOf(100))
+                .user(User.builder().userId(1L).build())
                 .orderItems(new ArrayList<>())
                 .build();
         OrderForUpdate.getOrderItems().add(OrderItem.builder().item(Item.builder().itemId(2L).build()).build());

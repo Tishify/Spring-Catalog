@@ -52,4 +52,14 @@ CREATE TABLE "order_items" (
                                 ON DELETE CASCADE
                                 ON UPDATE CASCADE
 );
---rollback DROP TABLE IF EXISTS order_items;
+
+--rollback DROP TABLE IF EXISTS order_items;\
+
+CREATE TABLE "item_images" (
+                            image_id SERIAL PRIMARY KEY,
+                            item_id INT NOT NULL,
+                            image BYTEA,
+                            CONSTRAINT fk_itemimages_item FOREIGN KEY (item_id) REFERENCES "items"(item_id)
+                                ON DELETE CASCADE
+                                ON UPDATE CASCADE
+);

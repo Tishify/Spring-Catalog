@@ -1,4 +1,4 @@
-package org.tishfy.springcatalog.service;
+package org.tishfy.springcatalog.service.impl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.tishfy.springcatalog.model.User;
 import org.tishfy.springcatalog.repository.ItemRepository;
 import org.tishfy.springcatalog.repository.OrderRepository;
 import org.tishfy.springcatalog.repository.UserRepository;
+import org.tishfy.springcatalog.service.OrderService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.tishfy.springcatalog.service;
+package org.tishfy.springcatalog.service.impl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tishfy.springcatalog.exeptions.ItemNotFoundException;
 import org.tishfy.springcatalog.model.Item;
 import org.tishfy.springcatalog.repository.ItemRepository;
+import org.tishfy.springcatalog.service.ItemService;
 
 import java.util.List;
 import java.util.Optional;

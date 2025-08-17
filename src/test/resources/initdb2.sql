@@ -18,3 +18,9 @@ INSERT INTO public.orders(user_id, adding_time, total_cost)
 VALUES (1, now(), 90);
 INSERT INTO public.orders(user_id, adding_time, total_cost)
 VALUES (2, now(), 90);
+INSERT INTO public.item_images (item_id, image)
+VALUES (1, pg_read_binary_file('/docker-entrypoint-initdb.d/test.png'));
+INSERT INTO public.item_images (item_id, image)
+VALUES (1, pg_read_binary_file('/docker-entrypoint-initdb.d/test.png'));
+INSERT INTO public.item_images (item_id, image)
+VALUES (2, pg_read_binary_file('/docker-entrypoint-initdb.d/test.png'));

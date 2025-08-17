@@ -26,14 +26,14 @@ public class Order {
     // TODO can be changed after security integration
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_user"))
-    @NotNull(message = "Name cannot be null")
+    @NotNull(message = "User cannot be null")
     private User user;
 
     @Column(name = "adding_time", nullable = false)
     private LocalDateTime addingTime;
 
     @Column(name = "total_cost", nullable = false, precision = 10, scale = 2)
-    @NotNull(message = "Name cannot be null")
+    @NotNull(message = "Total Cost cannot be null")
     @Positive
     private BigDecimal totalCost;
 

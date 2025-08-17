@@ -1,4 +1,4 @@
-package org.tishfy.springcatalog.service;
+package org.tishfy.springcatalog.service.impl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tishfy.springcatalog.model.User;
 import org.tishfy.springcatalog.repository.UserRepository;
+import org.tishfy.springcatalog.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
