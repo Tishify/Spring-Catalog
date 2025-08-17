@@ -18,7 +18,6 @@ import org.tishfy.springcatalog.tests.model.Role;
 import org.tishfy.springcatalog.tests.model.User;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,9 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @DirtiesContext
 @Disabled
 class UserControllerTest {
+    Role admin = Role.builder().roleId(1L).build();
     @Autowired
     private TestRestTemplate restTemplate;
-    Role admin = Role.builder().roleId(1L).build();
 
     @Test
     void getUsers() {

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.tishfy.springcatalog.tests.exptions.model.ErrorResponse;
 import org.tishfy.springcatalog.tests.model.Item;
 
 import java.math.BigDecimal;
@@ -29,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         "spring.config.location=classpath:test-application.yml"
 })
 @DirtiesContext
-class ItemControllerTest {
+class ItemControllerTest extends BaseAutoTestConfiguration {
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -105,6 +106,35 @@ class ItemControllerTest {
         assertEquals("Felix", createdItem.getItemName());
         assertEquals(BigDecimal.valueOf(12), createdItem.getItemPrice());
         assertEquals("Stray Cat", createdItem.getItemDescription());
+    }
+
+    @Test
+    void createValidationError() {
+        Item item = Item.builder()
+                .itemName("Fel")
+                .itemPrice(BigDecimal.valueOf(12))
+                .build();
+
+        HttpEntity<Item> itemEntity = new HttpEntity<>(item);
+        ResponseEntity<ErrorResponse> response = restTemplate.exchange(
+                "/items",
+                HttpMethod.POST,
+                itemEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        ErrorResponse errors = response.getBody();
+        assertEquals("Name cannot be null", errors.getErrors().stream()
+                .filter(e -> "itemDescription".equals(e.getField()))
+                .map(ErrorResponse.FieldError::getMessage)
+                .findFirst().orElse("Error Not Found"));
+        assertEquals("Name should have between 4 and 200 characters", errors.getErrors().stream()
+                .filter(e -> "itemName".equals(e.getField()))
+                .map(ErrorResponse.FieldError::getMessage)
+                .findFirst().orElse("Error Not Found"));
     }
 
     @Test

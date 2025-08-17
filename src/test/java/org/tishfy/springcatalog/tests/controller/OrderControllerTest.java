@@ -14,6 +14,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tishfy.springcatalog.model.Item;
+import org.tishfy.springcatalog.tests.exptions.model.ErrorResponse;
 import org.tishfy.springcatalog.tests.model.Order;
 import org.tishfy.springcatalog.tests.model.OrderItem;
 import org.tishfy.springcatalog.tests.model.User;
@@ -33,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         "spring.config.location=classpath:test-application.yml"
 })
 @DirtiesContext
-class OrderControllerTest {
+class OrderControllerTest extends BaseAutoTestConfiguration {
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -65,7 +66,7 @@ class OrderControllerTest {
         Order createdOrder = createOrderRequest(order).getBody();
 
         ResponseEntity<Order> response = restTemplate.exchange(
-                "/orders/"+ createdOrder.getOrderId(),
+                "/orders/" + createdOrder.getOrderId(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
@@ -119,7 +120,8 @@ class OrderControllerTest {
                 "/orders",
                 HttpMethod.POST,
                 OrderEntity,
-                new ParameterizedTypeReference<>() {}
+                new ParameterizedTypeReference<>() {
+                }
         );
 
         assertEquals(201, response.getStatusCode().value());
@@ -129,6 +131,37 @@ class OrderControllerTest {
         assertNotNull(createdOrder.getOrderItems());
         assertEquals(1, createdOrder.getOrderItems().size());
         assertEquals(BigDecimal.valueOf(90), createdOrder.getTotalCost());
+    }
+
+    @Test
+    void createValidationError() {
+        Order order = Order.builder()
+                .totalCost(BigDecimal.valueOf(-1))
+                .orderItems(new ArrayList<>())
+                .build();
+
+        order.getOrderItems().add(OrderItem.builder().item(Item.builder().itemId(1L).build()).build());
+
+        HttpEntity<Order> OrderEntity = new HttpEntity<>(order);
+        ResponseEntity<ErrorResponse> response = restTemplate.exchange(
+                "/orders",
+                HttpMethod.POST,
+                OrderEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        ErrorResponse errors = response.getBody();
+        assertEquals("must be greater than 0", errors.getErrors().stream()
+                .filter(e -> "totalCost".equals(e.getField()))
+                .map(ErrorResponse.FieldError::getMessage)
+                .findFirst().orElse("Error Not Found"));
+        assertEquals("Name cannot be null", errors.getErrors().stream()
+                .filter(e -> "user".equals(e.getField()))
+                .map(ErrorResponse.FieldError::getMessage)
+                .findFirst().orElse("Error Not Found"));
     }
 
     @Test
