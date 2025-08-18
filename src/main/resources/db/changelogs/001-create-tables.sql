@@ -24,7 +24,7 @@ CREATE TABLE item (
                       item_id SERIAL PRIMARY KEY,
                       item_name VARCHAR(200) NOT NULL,
                       item_price NUMERIC(10, 2) NOT NULL CHECK (item_price >= 0),
-                      item_description TEXT,
+                      item_discription TEXT,
                       item_photo TEXT
 );
 --rollback DROP TABLE IF EXISTS item;
@@ -35,7 +35,6 @@ CREATE TABLE "order" (
                          user_id INT NOT NULL,
                          adding_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          total_cost NUMERIC(10, 2) NOT NULL CHECK (total_cost >= 0),
-                         item_details JSONB NOT NULL,
                          CONSTRAINT fk_order_user FOREIGN KEY (user_id) REFERENCES "user"(user_id)
                              ON DELETE CASCADE
                              ON UPDATE CASCADE
@@ -62,3 +61,16 @@ ALTER TABLE "user"
     ADD COLUMN enabled BOOLEAN DEFAULT TRUE NOT NULL;
 --rollback ALTER TABLE "user" DROP COLUMN IF EXISTS password_hash, DROP COLUMN IF EXISTS enabled;
 
+--changeset dmitry_lysenko:007
+ALTER TABLE item
+    ADD COLUMN category VARCHAR(100),
+    ADD COLUMN quantity INT NOT NULL DEFAULT 0 CHECK (quantity >= 0),
+    ADD COLUMN active BOOLEAN NOT NULL DEFAULT TRUE;
+--rollback ALTER TABLE item DROP COLUMN IF EXISTS category, DROP COLUMN IF EXISTS quantity, DROP COLUMN IF EXISTS active;
+
+--changeset dmitry_lysenko:008
+CREATE INDEX idx_item_category ON item(category);
+CREATE INDEX idx_item_active ON item(active);
+CREATE INDEX idx_item_name ON item(item_name);
+CREATE INDEX idx_item_price ON item(item_price);
+--rollback DROP INDEX IF EXISTS idx_item_category, idx_item_active, idx_item_name, idx_item_price;

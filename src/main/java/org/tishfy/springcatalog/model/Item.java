@@ -43,6 +43,17 @@ public class Item {
     @Column(name = "item_photo", columnDefinition = "TEXT")
     private String itemPhoto;
 
+    @Column(name = "category", length = 100)
+    private String category;
+
+    @Column(name = "quantity", nullable = false)
+    @Builder.Default
+    private Integer quantity = 0;
+
+    @Column(name = "active", nullable = false)
+    @Builder.Default
+    private boolean active = true;
+
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> buckets = new ArrayList<>();
 }

@@ -17,7 +17,6 @@ import org.tishfy.springcatalog.dto.AuthenticationRequest;
 import org.tishfy.springcatalog.dto.AuthenticationResponse;
 import org.tishfy.springcatalog.service.AuthenticationService;
 import org.tishfy.springcatalog.security.JwtUtil;
-
 @Controller
 @RequestMapping("/authentication")
 @RequiredArgsConstructor
@@ -35,8 +34,8 @@ public class AuthenticationController {
         log.debug("GET /authentication called from: {}", request.getRemoteAddr());
 
         if (jwt != null && !jwt.trim().isEmpty() && jwtUtil.validateToken(jwt)) {
-            log.debug("Valid JWT found, redirecting to /admin");
-            return "redirect:/admin";
+            log.debug("Valid JWT found, redirecting to /admin/panel");
+            return "redirect:/admin/panel";
         }
 
         if (!model.containsAttribute("authRequest")) {
@@ -77,7 +76,7 @@ public class AuthenticationController {
             response.addCookie(cookie);
 
             log.debug("Authentication successful for user: {}", authRequest.getEmail());
-            return "redirect:/admin";
+            return "redirect:/admin/panel";
 
         } catch (Exception e) {
             log.error("Authentication error", e);
@@ -86,7 +85,6 @@ public class AuthenticationController {
         }
     }
 
-    // REST API для JSON (если нужно отдельно)
     @PostMapping(path = "/api/login",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

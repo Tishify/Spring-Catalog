@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${isEdit} ? 'Edit Item' : 'Add New Item'">Edit Item</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title {
+            color: #333;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .form-subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .form-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            color: #555;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .image-preview {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .preview-img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-placeholder {
+            width: 200px;
+            height: 150px;
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: #6c757d;
+            font-size: 48px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                flex: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <div class="form-header">
+        <h1 class="form-title" th:text="${isEdit} ? 'Edit Item' : 'Add New Item'">Add New Item</h1>
+        <p class="form-subtitle" th:text="${isEdit} ? 'Update item information' : 'Fill in the details for the new item'">
+            Fill in the details for the new item
+        </p>
+    </div>
+
+    <form th:action="@{/admin/edit}" method="post" th:object="${item}">
+        <input type="hidden" name="itemId" th:value="${item.itemId}" th:if="${isEdit}">
+
+        <div class="form-group">
+            <label for="itemName" class="form-label">Item Name <span class="required">*</span></label>
+            <input type="text"
+                   id="itemName"
+                   th:field="*{itemName}"
+                   class="form-input"
+                   placeholder="Enter item name"
+                   required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="itemPrice" class="form-label">Price <span class="required">*</span></label>
+                <input type="number"
+                       id="itemPrice"
+                       th:field="*{itemPrice}"
+                       class="form-input"
+                       placeholder="0.00"
+                       step="0.01"
+                       min="0"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="category" class="form-label">Category</label>
+                <input type="text"
+                       id="category"
+                       th:field="*{category}"
+                       class="form-input"
+                       placeholder="e.g., Electronics, Clothing">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="quantity" class="form-label">Quantity in Stock <span class="required">*</span></label>
+                <input type="number"
+                       id="quantity"
+                       th:field="*{quantity}"
+                       class="form-input"
+                       placeholder="0"
+                       min="0"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Status</label>
+                <div class="form-checkbox-group">
+                    <input type="checkbox"
+                           id="active"
+                           th:field="*{active}"
+                           class="form-checkbox">
+                    <label for="active" class="checkbox-label">Item is active and visible</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="itemPhoto" class="form-label">Image URL</label>
+            <input type="url"
+                   id="itemPhoto"
+                   th:field="*{itemPhoto}"
+                   class="form-input"
+                   placeholder="https://example.com/image.jpg"
+                   onchange="previewImage(this.value)">
+
+            <div class="image-preview" id="imagePreview">
+                <img th:if="${item.itemPhoto != null and item.itemPhoto != ''}"
+                     th:src="${item.itemPhoto}"
+                     class="preview-img"
+                     alt="Item preview"
+                     onerror="showPlaceholder()">
+                <div th:unless="${item.itemPhoto != null and item.itemPhoto != ''}"
+                     class="preview-placeholder" id="placeholder">
+                    📷
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="itemDescription" class="form-label">Description</label>
+            <textarea id="itemDescription"
+                      th:field="*{itemDescription}"
+                      class="form-textarea"
+                      placeholder="Enter detailed description of the item..."
+                      rows="4"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <a href="/admin/panel" class="btn btn-secondary">
+                ← Cancel
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <span th:text="${isEdit} ? '💾 Update Item' : '✅ Create Item'">✅ Create Item</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function previewImage(url) {
+        const preview = document.getElementById('imagePreview');
+        const placeholder = document.getElementById('placeholder');
+
+        if (url && url.trim() !== '') {
+            // Remove existing content
+            preview.innerHTML = '';
+
+            // Create new image
+            const img = document.createElement('img');
+            img.src = url;
+            img.className = 'preview-img';
+            img.alt = 'Item preview';
+            img.onerror = showPlaceholder;
+
+            preview.appendChild(img);
+        } else {
+            showPlaceholder();
+        }
+    }
+
+    function showPlaceholder() {
+        const preview = document.getElementById('imagePreview');
+        preview.innerHTML = '<div class="preview-placeholder" id="placeholder">📷</div>';
+    }
+
+    // Form validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const itemName = document.getElementById('itemName');
+        const itemPrice = document.getElementById('itemPrice');
+        const quantity = document.getElementById('quantity');
+
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+            // Validate item name
+            if (!itemName.value.trim()) {
+                showError(itemName, 'Item name is required');
+                isValid = false;
+            }
+
+            // Validate price
+            if (!itemPrice.value || parseFloat(itemPrice.value) < 0) {
+                showError(itemPrice, 'Valid price is required');
+                isValid = false;
+            }
+
+            // Validate quantity
+            if (!quantity.value || parseInt(quantity.value) < 0) {
+                showError(quantity, 'Valid quantity is required');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+        function showError(element, message) {
+            const error = document.createElement('div');
+            error.className = 'error-message';
+            error.textContent = message;
+            element.parentElement.appendChild(error);
+        }
+    });
+</script>
+</body>
+</html>

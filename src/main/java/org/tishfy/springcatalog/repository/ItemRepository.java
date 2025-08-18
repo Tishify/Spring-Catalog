@@ -7,10 +7,20 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
+
     List<Item> findByItemNameContainingIgnoreCase(String itemName);
+
+    List<Item> findByCategoryContainingIgnoreCase(String category);
 
     List<Item> findByItemPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
 
     List<Item> findAllByOrderByItemName();
 
+    List<Item> findByActiveTrue();
+
+    List<Item> findByActiveFalse();
+
+    List<Item> findByQuantityGreaterThan(Integer quantity);
+
+    List<Item> findByQuantityLessThanEqual(Integer quantity);
 }
